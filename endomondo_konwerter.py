@@ -79,3 +79,4 @@ finally:
     f.close()
     #print(workouts[0][0])
     print(klucze)
+    print()
