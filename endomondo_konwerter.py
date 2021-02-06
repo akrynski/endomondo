@@ -9,9 +9,6 @@ workout = None
 line = None
 aktualny_workout = None
 workout_data = None
-workout_items = []
-workouts = []
-
 klucze = []
 
 os.chdir("C:\\Users\\Andrzej\\Downloads\\endomondo-2021-01-27\\Workouts\\")
@@ -23,6 +20,7 @@ def czytaj_workout(_line):
     try:
         global aktualny_workout
         global workout_data
+        global klucze
         print("Otwieram plik " + _line)
         if _line.strip() == "output.txt":
             return 0
