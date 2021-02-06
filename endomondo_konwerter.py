@@ -31,12 +31,11 @@ def czytaj_workout(_line):
         print("Json ładuje plik " + _line)
         workout_data = json.load(aktualny_workout)
         pola = len(workout_data)
-        tmp = []
-        for i in range(pola-1):
-            #print(workout_data[i])
-            tmp.append(workout_data[i])
-            #print(workout_items[0])
-        workouts.append([tmp])
+        for i in range(pola):
+            keyclass = workout_data[i].keys()
+            klucz = list(keyclass)[0]
+            if klucz not in klucze:
+                klucze.append(klucz)
 
 
     except(IOError, OSError):
@@ -53,7 +52,7 @@ def czytaj_workout(_line):
 
 try:
     with codecs.open('./output.txt', 'r', 'utf-8', 'ignore') as f:
-        print("Odczytuję dane z dostarczonych przez Endomondo plików. Bądź cierpliwy, "
+        print("Odczytuję dane z dostarczonych przez Endomondo plików. Cierpliwości, "
               "to może chwilę potrwać.", end='\n')
         print("Aktualny folder to ", os.getcwd(), end='\n')
         print(datetime.date.today())
@@ -64,12 +63,6 @@ try:
             czytaj_workout(line)
             line = f.readline()
 
-    for i in range(len(workouts) - 1):
-        #print(workout_items[klucz])
-        for klucz, wartosc in workouts[i][0][0].items():
-            print(workouts[i][0][0])
-            if klucz not in klucze:
-                klucze.append(klucz)
 except (IOError, OSError):
     # print >> sys.stderr, "Error!", sys.exc_info()[0]
     print("Error!", sys.exc_info()[0], file=sys.stderr)
