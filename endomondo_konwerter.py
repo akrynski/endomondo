@@ -68,6 +68,16 @@ except (IOError, OSError):
     sys.exit(1)
 finally:
     f.close()
-    #print(workouts[0][0])
-    print(klucze)
+    print("klucze: ", klucze)
     print()
+    for i in range(17):
+        if list(workout_data[i].keys())[0] != 'points':
+            print(list(workout_data[i].keys())[0])
+            print(list(workout_data[i].values())[0])
+        else:
+            location_dic = workout_data[i]['points']
+            print(location_dic[0][0])
+            print(location_dic[0][1])#dystans do pierwszego pktu
+            print(list(location_dic[0][0])[0])#0=napis klucza location
+            print(location_dic[1][0])
+            print(location_dic[0][1])  # dystans do drugiego pktu
