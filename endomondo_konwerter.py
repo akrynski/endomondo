@@ -3,7 +3,10 @@
 # author: Andrzej Kryński
 # licence: MIT
 # date: 05-02-2021
+#github access key: 044cb299a8c2d590a7d100d092b469ef0e2f0d3b
+#delete it if u makake repo public !!!!!!!!!!!!!
 import codecs, os, sys, datetime, json
+from pathlib import Path
 
 workout = None
 line = None
@@ -22,6 +25,7 @@ def czytaj_workout(_line):
         global aktualny_workout
         global workout_data
         global klucze
+        global wartosci
         print("Otwieram plik " + _line)
         if _line.strip() == "output.txt":
             return 0
@@ -69,7 +73,7 @@ try:
         print(datetime.date.today())
         print(80 * '*')
         line = f.readline()
-        while line != '':
+        while line:# != '':
             print("Opracowuję plik " + line.strip())
             czytaj_workout(line)
             line = f.readline()
@@ -83,9 +87,11 @@ finally:
     f.close()
     #print("klucze: ", klucze)
     #print()
-
-    for i in range(17):
+#    for data in workout_data:
+ #       print(f"comments:  {data.get('comments')}")
+    for i in range(17): #za tagiem points jest jeszcze w tym pliku tag comments!!!, którego nie czytamy
         if list(workout_data[i].keys())[0] != 'points':
+
             '''
             print(list(workout_data[i].keys())[0])
             print(list(workout_data[i].values())[0])
@@ -95,17 +101,25 @@ finally:
             print(klucz)
             print(wartosci[i][klucz][0])
             '''!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'''
+
         else:
             location_dic = workout_data[i]['points']
             print(location_dic[0][0])
             print(location_dic[0][1])#dystans do pierwszego pktu
             latitude_dic = list((location_dic[0][0]).values())[0][0][0]
             longitude_dic = list((location_dic[0][0]).values())[0][0][1]
-            print("latitude: ", latitude_dic['latitude'])
-            print("longitude: ", longitude_dic['longitude'])
+            #print("latitude: ", latitude_dic['latitude'])
+            #print("longitude: ", longitude_dic['longitude'])
 
             #print(list(location_dic[0][0])[0])#0=napis klucza location
-            print(location_dic[1][0])
-            print(location_dic[0][1])  # dystans do drugiego pktu
+            #print(location_dic[1][0])
+            #print(location_dic[0][1])  # dystans do drugiego pktu
 
-            #print(*workout_data[1]) napis klucza source
+            #print(workout_data[0]['comments'])# czemu nie czyta? nie wczytane z pliku?
+            #print([*workout_data]) #ano nie wczytane W H Y !!! ???
+            #print(f"comments: {workout_data[-1]}")->tu jest location!!!
+            for data in workout_data:
+                location_dic = data.get('points')
+                print(f"latitude: {latitude_dic.get('latitude')}")
+                print(f"longitude: {longitude_dic.get('longitude')}")
+                #print(f"comments:  {data.get('comments')}")
