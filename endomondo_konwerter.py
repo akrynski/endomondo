@@ -8,60 +8,65 @@
 import codecs, os, sys, datetime, json
 from pathlib import Path
 
-workout = None
-line = None
-aktualny_workout = None
-workout_data = None
+
 klucze = []
 wartosci = []
 
 os.chdir("C:\\Users\\Andrzej\\Downloads\\endomondo-2021-01-27\\Workouts\\")
 os.system("dir /B /A:-D > .\\output.txt")
 
+workout_data = None
 
 # noinspection PyShadowingNames
 def czytaj_workout(_line):
     try:
-        global aktualny_workout
-        global workout_data
-        global klucze
-        global wartosci
         print("Otwieram plik " + _line)
         if _line.strip() == "output.txt":
-            return 0
+            return
 
         aktualny_workout = codecs.open(_line.strip(), 'r', 'utf-8', 'ignore')
         print("Json ładuje plik " + _line)
         workout_data = json.load(aktualny_workout)
         pola = len(workout_data)
         for i in range(pola):
-            '''
-            print("Klucz " + str(i) +" : ", *workout_data[i])
-            kl = [*workout_data[i]]
-            print(kl[0])
-            '''
-            '''
-            keyclass = workout_data[i].keys()
-            klucz = list(keyclass)[0]
-            if klucz not in klucze:
-                klucze.append(klucz)
-            '''
             klucz = [*workout_data[i]][0]
             if klucz not in klucze:
                 klucze.append(klucz)
             wartosci.append({klucz: list(workout_data[i].values())})
 
+        for i, v in enumerate(klucze):  # za tagiem points jest jeszcze w tym pliku tag comments!!!, którego nie czytamy
+
+            if list(workout_data[i].keys())[0] != 'points':
+                print(i)
+                print(workout_data[i])
+                print(list(workout_data[i].keys())[0])
+                klucz = klucze[i]
+                print('k-v: ', klucz,': ',wartosci[i][klucz][0])
+                print(10*'-')
+            elif list(workout_data[i].keys())[0] == 'points':
+                print(i)
+                print('TU SĄ POINSY')
+            else:
+                location_dic = workout_data[i]['points']
+                print('location: ', location_dic[0][0])
+                print('location\'s timestamp: ', location_dic[0][1])  # location timestamp
+                latitude_dic = list((location_dic[1][0]).values())[0][0][0]
+                longitude_dic = list((location_dic[1][0]).values())[0][0][1]
+                print("-->latitude: ", latitude_dic['latitude'])
+                print("-->longitude: ", longitude_dic['longitude'])
+                print(f"-->the last tag (workout_data[-1]): {workout_data[-1]}")#->tu jest location!!!
+                for data in workout_data:
+                    location_dic = data.get('points')
+                    print(f"latitude: {latitude_dic.get('latitude')}")
+                    print(f"longitude: {longitude_dic.get('longitude')}")
+                    # print(f"comments: ", [*workout_data[17]][0])
+                    print(f"comments: {data.get('comments')}")
+
+        return workout_data
+    #--------------------------------------------------------------------------------
     except(IOError, OSError):
         print('Błąd funkcji \'czytaj_workout\'!', sys.exc_info()[0], file=sys.stderr)
-        aktualny_workout.close()
-        aktualny_workout = None
         sys.exit(1)
-    finally:
-        if aktualny_workout is not None:
-            aktualny_workout.close()
-            aktualny_workout = None
-    return  # workout
-
 
 try:
     with codecs.open('./output.txt', 'r', 'utf-8', 'ignore') as f:
@@ -71,9 +76,9 @@ try:
         print(datetime.date.today())
         print(80 * '*')
         line = f.readline()
-        while line:# != '':
+        while line != '':
             print("Opracowuję plik " + line.strip())
-            czytaj_workout(line)
+            workout_data = czytaj_workout(line)
             line = f.readline()
 
 except (IOError, OSError):
@@ -83,44 +88,7 @@ except (IOError, OSError):
     sys.exit(1)
 finally:
     f.close()
-    #print("klucze: ", klucze)
-    #print()
-#    for data in workout_data:
- #       print(f"comments:  {data.get('comments')}")
+    print('At the end I print all keys')
     for i, v in enumerate(klucze):
         print(i,v)
 
-    for i in range(17): #za tagiem points jest jeszcze w tym pliku tag comments!!!, którego nie czytamy
-        if list(workout_data[i].keys())[0] != 'points':
-
-            '''
-            print(list(workout_data[i].keys())[0])
-            print(list(workout_data[i].values())[0])
-            '''
-            '''!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'''
-            klucz = klucze[i]
-            print(klucz)
-            print(wartosci[i][klucz][0])
-            '''!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'''
-
-        else:
-            location_dic = workout_data[i]['points']
-            print(location_dic[0][0])
-            print(location_dic[0][1])#dystans do pierwszego pktu
-            latitude_dic = list((location_dic[0][0]).values())[0][0][0]
-            longitude_dic = list((location_dic[0][0]).values())[0][0][1]
-            #print("latitude: ", latitude_dic['latitude'])
-            #print("longitude: ", longitude_dic['longitude'])
-
-            #print(list(location_dic[0][0])[0])#0=napis klucza location
-            #print(location_dic[1][0])
-            #print(location_dic[0][1])  # dystans do drugiego pktu
-
-            #print(workout_data[0]['comments'])# czemu nie czyta? nie wczytane z pliku?
-            #print([*workout_data]) #ano nie wczytane W H Y !!! ???
-            #print(f"comments: {workout_data[-1]}")->tu jest location!!!
-            for data in workout_data:
-                location_dic = data.get('points')
-                print(f"latitude: {latitude_dic.get('latitude')}")
-                print(f"longitude: {longitude_dic.get('longitude')}")
-                #print(f"comments: ", [*workout_data[17]][0])
