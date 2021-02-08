@@ -89,6 +89,9 @@ finally:
     #print()
 #    for data in workout_data:
  #       print(f"comments:  {data.get('comments')}")
+    for i, v in enumerate(klucze):
+        print(i,v)
+
     for i in range(17): #za tagiem points jest jeszcze w tym pliku tag comments!!!, którego nie czytamy
         if list(workout_data[i].keys())[0] != 'points':
 
@@ -122,4 +125,4 @@ finally:
                 location_dic = data.get('points')
                 print(f"latitude: {latitude_dic.get('latitude')}")
                 print(f"longitude: {longitude_dic.get('longitude')}")
-                #print(f"comments:  {data.get('comments')}")
+                #print(f"comments: ", [*workout_data[17]][0])
