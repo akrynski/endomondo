@@ -51,8 +51,6 @@ def czytaj_workout(_line):
                 klucze.append(klucz)
             wartosci.append({klucz: list(workout_data[i].values())})
 
-
-
     except(IOError, OSError):
         print('Błąd funkcji \'czytaj_workout\'!', sys.exc_info()[0], file=sys.stderr)
         aktualny_workout.close()
