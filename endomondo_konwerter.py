@@ -72,11 +72,11 @@ def czytaj_workout(_line):
                 location_dic_list = workout_data[i]['points']
                 #print('type: ',type(location_dic_list)) >>> <class 'list'>
                 for i,v in enumerate(location_dic_list):
-                    location_dic = location_dic_list[i]
-                    location = location_dic[0]['location']
-                    print('latitude',location[0][0]['latitude'])
-                    print('longitude', location[0][1]['longitude'])
+                    print('||||||||||||||||||||||||||||||\n')
                     for item in v:
+                        if 'location' in item:
+                            print('latitude', item['location'][0][0]['latitude'])
+                            print('longitude', item['location'][0][1]['longitude'])
                         if 'distance_km' in item:
                             print('przebyty dystans: ', item['distance_km'], 'km')
                         if 'speed_kmh' in item:
@@ -102,6 +102,8 @@ try:
             line = f.readline()
             if line.strip() == "output.txt":
                 print('EOF ritched. Breaking')
+                break
+            if not line:
                 break
             print("Opracowuję plik " + line.strip())
             czytaj_workout(line)
