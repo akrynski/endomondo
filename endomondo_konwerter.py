@@ -26,41 +26,68 @@ def czytaj_workout(_line):
         print("Json ładuje plik " + _line)
         workout_data = json.load(_aktualny_workout)
         pola = len(workout_data)
+        klucze = []
         for i in range(pola):
             klucz = [*workout_data[i]][0]
             if klucz not in klucze:
                 klucze.append(klucz)
             wartosci.append({klucz: list(workout_data[i].values())})
+        print('klucze: ',klucze)
 
         for i, v in enumerate(klucze):  # za tagiem points jest jeszcze w tym pliku tag comments!!!, którego nie czytamy
             #if list(workout_data[i].keys())[0] != 'points':
-            if v != 'points' and i < pola:
+            print("i=",i, "v=",v)
+            if v != 'points':
                 print('index = ',i)
-                print('słownik = ',workout_data[i])
+                #print('słownik = ',workout_data[i]) !OK!
                 print('klucz = ',list(workout_data[i].keys())[0])
-                #klucz = klucze[i]
+                print('wartość: ',workout_data[i][v])
                 print('k-v: ', i,': ',v)#wartosci[i][v][0])
                 print(10*'-')
+                if v == 'comments':
+                    print("SEKCJA COMMENTS")
+                    comment_dic_list= workout_data[i]
+                    #print("-->dic_list: ",comment_dic_list) !OK!
+                    comment_dic = list(comment_dic_list['comments'][0])
+                    #print("dic-->: ",comment_dic) !OK!
+                    print('Autor: ',comment_dic[0]['author'])
+                    print('text: ', comment_dic[2]['text'])
+                    print(10*'-')
+                elif v == 'routes':
+                    print('SEKCJA ROUTES')
+                    routes_dic_list = workout_data[i]
+                    #print(routes_dic_list) !OK!
+                    routes_dic = list(routes_dic_list['routes'][0])
+                    print('name: ',routes_dic[1]['name'])
+                    print('identifier: ', routes_dic[0]['identifier'])
+                    print(10*'-')
+
             #elif list(workout_data[i].keys())[0] == 'points':
             elif v == 'points':
+                print('v==points: ',v)
                 print(i)
                 print('TU SĄ POINSY')
                 print(10*'v')
-
+                print('dla points index = ',i)#ale tu o 1 więcej - 15,16 itp
                 location_dic = workout_data[i]['points']
                 print('location: ', location_dic[0][0])
                 print('location\'s timestamp: ', location_dic[0][1])  # location timestamp
-                latitude_dic = list((location_dic[1][0]).values())[0][0][0]
-                longitude_dic = list((location_dic[1][0]).values())[0][0][1]
-                print("-->latitude: ", latitude_dic['latitude'])
-                print("-->longitude: ", longitude_dic['longitude'])
-                #print(f"-->the last tag (workout_data[-1]): {workout_data[-1]}")#->tu jest location!!!
+                print()
+                #print(location_dic)
+                ''' ^ W TYM MIEJSCU NIEKTÓRE PLIKI MAJĄ INNE DANE ^ '''
+                #print("-->latitude: ", latitude_dic['latitude'])
+                #print("-->longitude: ", longitude_dic['longitude'])
                 for data in workout_data:
-                    location_dic = data.get('points')
-                    print(f"latitude: {latitude_dic.get('latitude')}")
-                    print(f"longitude: {longitude_dic.get('longitude')}")
-                    # print(f"comments: ", [*workout_data[17]][0])
-                    #print(f"comments: {data.get('comments')}")
+                    if data.get('location') != 'None':
+                        latitude_dic = list((location_dic[1][0]).values())[0][0][0]
+                        longitude_dic = list((location_dic[1][0]).values())[0][0][1]
+                        print(f"latitude: {latitude_dic.get('latitude')}")
+                        print(f"longitude: {longitude_dic.get('longitude')}")
+
+
+            else:
+                continue
+
 
         return workout_data
     #--------------------------------------------------------------------------------
@@ -75,25 +102,20 @@ try:
         print("Aktualny folder to ", os.getcwd(), end='\n')
         print(datetime.date.today())
         print(80 * '*')
-        #line = f.readline()
-        #while line:
-        line = ''
         for line in f:
+            line = ''
             line = f.readline()
+            if line.strip() == "output.txt":
+                print('EOF ritched. Breaking')
+                break
             print("Opracowuję plik " + line.strip())
-            #workout = None
             czytaj_workout(line)
-
-
-except(IOError, OSError):
-    # print >> sys.stderr, "Error!", sys.exc_info()[0]
+except():
+    # print >> sys.stderr, "Error!", sys.exc_info()[0] #python <v.3
     print("Error!", sys.exc_info()[0], file=sys.stderr)
     f.close()
     sys.exit(1)
-
 finally:
     f.close()
-    print('At the end I print all keys')
-    for i, v in enumerate(klucze):
-        print(i,v)
+
 
