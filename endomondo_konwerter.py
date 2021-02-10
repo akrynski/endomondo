@@ -69,26 +69,21 @@ def czytaj_workout(_line):
                 print('TU SĄ POINSY')
                 print(10*'v')
                 print('dla points index = ',i)#ale tu o 1 więcej - 15,16 itp
-                location_dic = workout_data[i]['points']
-                print('location: ', location_dic[0][0])
-                print('location\'s timestamp: ', location_dic[0][1])  # location timestamp
-                print()
-                #print(location_dic)
-                ''' ^ W TYM MIEJSCU NIEKTÓRE PLIKI MAJĄ INNE DANE ^ '''
-                #print("-->latitude: ", latitude_dic['latitude'])
-                #print("-->longitude: ", longitude_dic['longitude'])
-                for data in workout_data:
-                    if data.get('location') != 'None':
-                        latitude_dic = list((location_dic[1][0]).values())[0][0][0]
-                        longitude_dic = list((location_dic[1][0]).values())[0][0][1]
-                        print(f"latitude: {latitude_dic.get('latitude')}")
-                        print(f"longitude: {longitude_dic.get('longitude')}")
-
-
+                location_dic_list = workout_data[i]['points']
+                #print('type: ',type(location_dic_list)) >>> <class 'list'>
+                for i,v in enumerate(location_dic_list):
+                    location_dic = location_dic_list[i]
+                    location = location_dic[0]['location']
+                    print('latitude',location[0][0]['latitude'])
+                    print('longitude', location[0][1]['longitude'])
+                    for item in v:
+                        if 'distance_km' in item:
+                            print('przebyty dystans: ', item['distance_km'], 'km')
+                        if 'speed_kmh' in item:
+                            print('Prędkość na odcinku: ', item['speed_kmh'],'km/h')
+                print(10*'*')
             else:
                 continue
-
-
         return workout_data
     #--------------------------------------------------------------------------------
     except(IOError, OSError):
