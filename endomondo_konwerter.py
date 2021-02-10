@@ -71,6 +71,7 @@ def czytaj_workout(_line):
                 print('dla points index = ',i)#ale tu o 1 więcej - 15,16 itp
                 location_dic_list = workout_data[i]['points']
                 #print('type: ',type(location_dic_list)) >>> <class 'list'>
+                continue
                 for i,v in enumerate(location_dic_list):
                     print('||||||||||||||||||||||||||||||\n')
                     for item in v:
@@ -101,7 +102,7 @@ try:
             line = ''
             line = f.readline()
             if line.strip() == "output.txt":
-                print('EOF ritched. Breaking')
+                print('EOF reached. Breaking')
                 break
             if not line:
                 break
