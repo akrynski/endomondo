@@ -34,35 +34,27 @@ def czytaj_workout(_line):
             wartosci.append({klucz: list(workout_data[i].values())})
         print('klucze: ',klucze)
 
-        for i, v in enumerate(klucze):  # za tagiem points jest jeszcze w tym pliku tag comments!!!, którego nie czytamy
-            #if list(workout_data[i].keys())[0] != 'points':
+        for i, v in enumerate(klucze):
             print("i=",i, "v=",v)
             if v != 'points':
                 print('index = ',i)
-                #print('słownik = ',workout_data[i]) !OK!
                 print('klucz = ',list(workout_data[i].keys())[0])
                 print('wartość: ',workout_data[i][v])
-                print('k-v: ', i,': ',v)#wartosci[i][v][0])
                 print(10*'-')
                 if v == 'comments':
                     print("SEKCJA COMMENTS")
                     comment_dic_list= workout_data[i]
-                    #print("-->dic_list: ",comment_dic_list) !OK!
                     comment_dic = list(comment_dic_list['comments'][0])
-                    #print("dic-->: ",comment_dic) !OK!
                     print('Autor: ',comment_dic[0]['author'])
                     print('text: ', comment_dic[2]['text'])
                     print(10*'-')
                 elif v == 'routes':
                     print('SEKCJA ROUTES')
                     routes_dic_list = workout_data[i]
-                    #print(routes_dic_list) !OK!
                     routes_dic = list(routes_dic_list['routes'][0])
                     print('name: ',routes_dic[1]['name'])
                     print('identifier: ', routes_dic[0]['identifier'])
                     print(10*'-')
-
-            #elif list(workout_data[i].keys())[0] == 'points':
             elif v == 'points':
                 print('v==points: ',v)
                 print(i)
@@ -70,10 +62,9 @@ def czytaj_workout(_line):
                 print(10*'v')
                 print('dla points index = ',i)#ale tu o 1 więcej - 15,16 itp
                 location_dic_list = workout_data[i]['points']
-                #print('type: ',type(location_dic_list)) >>> <class 'list'>
-                continue
+                #continue
                 for i,v in enumerate(location_dic_list):
-                    print('||||||||||||||||||||||||||||||\n')
+                    print(i,'||||||||||||||||||||||||||||||\n')
                     for item in v:
                         if 'location' in item:
                             print('latitude', item['location'][0][0]['latitude'])
