@@ -35,17 +35,23 @@ def czytaj_workout(_line):
         print("Json ładuje plik " + _line)
         workout_data = json.load(_aktualny_workout)
         pola = len(workout_data)
-
         klucze = []
-        for i in range(pola):
+        wartosci = []
+        '''for i in range(pola):
             klucz = [*workout_data[i]][0]
             if klucz not in klucze:
                 klucze.append(klucz)
             wartosci.append({klucz: list(workout_data[i].values())})
-        print('klucze: ',klucze)
+        print('klucze: ',klucze)'''
+        for i,v in enumerate(workout_data):
+            klucz = [*workout_data[i]][0]
+            if klucz not in klucze:
+                klucze.append(klucz)
+            #wartosci.append(v[klucz])
+        #print(wartosci)
 
         for i, v in enumerate(klucze):
-            print("i=",i, "v=",v)
+            #print("i=",i, "v=",v)
             if v != 'points':
                 print('index = ',i)
                 print('klucz = ',list(workout_data[i].keys())[0])
@@ -101,4 +107,3 @@ with codecs.open('./output.txt', 'r', 'utf-8', 'ignore') as f:
         print(80 * '*')
         for wiersz in czytaj_wiersz(f):
                 czytaj_workout(wiersz)
-
