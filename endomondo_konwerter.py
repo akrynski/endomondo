@@ -43,7 +43,7 @@ def czytaj_workout(_line):
                 klucze.append(klucz)
             wartosci.append({klucz: list(workout_data[i].values())})
         print('klucze: ',klucze)'''
-        for i,v in enumerate(workout_data):
+        for i,_ in enumerate(workout_data):
             klucz = [*workout_data[i]][0]
             if klucz not in klucze:
                 klucze.append(klucz)
@@ -70,6 +70,16 @@ def czytaj_workout(_line):
                     routes_dic = list(routes_dic_list['routes'][0])
                     print('name: ',routes_dic[1]['name'])
                     print('identifier: ', routes_dic[0]['identifier'])
+                    print(10*'-')
+                elif v == "pictures":
+                    print("SEKCJA PICTURES")
+                    pictures_dic_list = workout_data[i]['pictures']
+                    for i,v in enumerate(pictures_dic_list):
+                        for item in v:
+                            #print(item)
+                            if 'picture'in item:
+                                print('url: ', item['picture'][0][0]['url'])
+
                     print(10*'-')
             elif v == 'points':
                 print('v==points: ',v)
