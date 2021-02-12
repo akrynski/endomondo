@@ -93,32 +93,12 @@ def czytaj_workout(_line):
         print('Błąd funkcji \'czytaj_workout\'!', sys.exc_info()[0], file=sys.stderr)
         sys.exit(1)
 #vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
-try:
-        #with codecs.open('./output.txt', 'r', 'utf-8', 'ignore') as f:
-        f = codecs.open('./output.txt', 'r', 'utf-8', 'ignore')
+with codecs.open('./output.txt', 'r', 'utf-8', 'ignore') as f:
         print("Odczytuję dane z dostarczonych przez Endomondo plików. Cierpliwości, "
               "to może chwilę potrwać.", end='\n')
         print("Aktualny folder to ", os.getcwd(), end='\n')
         print(datetime.date.today())
         print(80 * '*')
-        '''for line in f:
-            line = ''
-            line = f.readline()
-            if line.strip() == "output.txt":
-                print('EOF reached. Breaking')
-                break
-            if not line:
-                break
-            print("Opracowuję plik " + line.strip())
-            czytaj_workout(line)'''
         for wiersz in czytaj_wiersz(f):
-            czytaj_workout(wiersz)
-except():
-    # print >> sys.stderr, "Error!", sys.exc_info()[0] #python <v.3
-    print("Error!", sys.exc_info()[0], file=sys.stderr)
-    f.close()
-    sys.exit(1)
-finally:
-    f.close()
-
+                czytaj_workout(wiersz)
 
