@@ -6,7 +6,6 @@
 #github access key: 044cb299a8c2d590a7d100d092b469ef0e2f0d3b
 #delete it if u makake repo public !!!!!!!!!!!!!
 import codecs, os, sys, datetime, json
-from pathlib import Path
 
 
 klucze = []
@@ -15,17 +14,28 @@ wartosci = []
 os.chdir("C:\\Users\\Andrzej\\Downloads\\endomondo-2021-01-27\\Workouts\\")
 os.system("dir /B /A:-D > .\\output.txt")
 
+
+def czytaj_wiersz(plik):
+    for wiersz in plik:
+        wiersz = plik.readline()
+        wiersz = wiersz.strip()
+        if wiersz == "output.txt":
+            print("Koniec pliku \(EOF\).")
+            break
+        if not wiersz:
+            break
+        yield wiersz
 # noinspection PyShadowingNames
 def czytaj_workout(_line):
     try:
         print("Otwieram plik " + _line.strip())
         if _line.strip() == "output.txt":
             return 0
-
         _aktualny_workout = codecs.open(_line.strip(), 'r', 'utf-8', 'ignore')
         print("Json ładuje plik " + _line)
         workout_data = json.load(_aktualny_workout)
         pola = len(workout_data)
+
         klucze = []
         for i in range(pola):
             klucz = [*workout_data[i]][0]
@@ -62,7 +72,8 @@ def czytaj_workout(_line):
                 print(10*'v')
                 print('dla points index = ',i)#ale tu o 1 więcej - 15,16 itp
                 location_dic_list = workout_data[i]['points']
-                #continue
+                print("Jeślinie widać lokacji, to odkomentuj dyrektywę CONTINUE w linii 76\n")
+                continue
                 for i,v in enumerate(location_dic_list):
                     print(i,'||||||||||||||||||||||||||||||\n')
                     for item in v:
@@ -81,15 +92,16 @@ def czytaj_workout(_line):
     except(IOError, OSError):
         print('Błąd funkcji \'czytaj_workout\'!', sys.exc_info()[0], file=sys.stderr)
         sys.exit(1)
-
+#vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
 try:
-    with codecs.open('./output.txt', 'r', 'utf-8', 'ignore') as f:
+        #with codecs.open('./output.txt', 'r', 'utf-8', 'ignore') as f:
+        f = codecs.open('./output.txt', 'r', 'utf-8', 'ignore')
         print("Odczytuję dane z dostarczonych przez Endomondo plików. Cierpliwości, "
               "to może chwilę potrwać.", end='\n')
         print("Aktualny folder to ", os.getcwd(), end='\n')
         print(datetime.date.today())
         print(80 * '*')
-        for line in f:
+        '''for line in f:
             line = ''
             line = f.readline()
             if line.strip() == "output.txt":
@@ -98,7 +110,9 @@ try:
             if not line:
                 break
             print("Opracowuję plik " + line.strip())
-            czytaj_workout(line)
+            czytaj_workout(line)'''
+        for wiersz in czytaj_wiersz(f):
+            czytaj_workout(wiersz)
 except():
     # print >> sys.stderr, "Error!", sys.exc_info()[0] #python <v.3
     print("Error!", sys.exc_info()[0], file=sys.stderr)
