@@ -33,24 +33,17 @@ def czytaj_workout(_line):
         workout_data = json.load(_aktualny_workout)
         pola = len(workout_data)
         klucze = []# to nie deklaracja a czyszczenie - deque?
-        '''for i in range(pola):
-            klucz = [*workout_data[i]][0]
-            if klucz not in klucze:
-                klucze.append(klucz)
-            wartosci.append({klucz: list(workout_data[i].values())})
-        print('klucze: ',klucze)'''
+
         for i,_ in enumerate(workout_data):
             klucz = [*workout_data[i]][0]
             if klucz not in klucze:
                 klucze.append(klucz)
-            #wartosci.append(v[klucz])
-        #print(wartosci)
 
         for i, v in enumerate(klucze):
             #print("i=",i, "v=",v)
             if  v != 'points':
                 print('index = ',i)
-                print('klucz = ',list(workout_data[i].keys())[0])
+                print('klucz = ',list(workout_data[i].keys())[0])# == v
                 print('wartość: ',workout_data[i][v])
                 print(10*'-')
                 if v == 'comments':
@@ -64,7 +57,8 @@ def czytaj_workout(_line):
                     print('SEKCJA ROUTES')
                     routes_dic_list = workout_data[i]
                     routes_dic = list(routes_dic_list['routes'][0])
-                    print('name: ',routes_dic[1]['name'])
+                    print('name: ',routes_dic[1]['name']) # jeśli struktura tabeli wartości routes jest niezmienna
+                                                          # mogę użyć stałych wskaźników tabeli ([0],[1])
                     print('identifier: ', routes_dic[0]['identifier'])
                     print(10*'-')
                 elif v == "pictures":
@@ -72,7 +66,6 @@ def czytaj_workout(_line):
                     pictures_dic_list = workout_data[i]['pictures']
                     for i,v in enumerate(pictures_dic_list):
                         for item in v:
-                            #print(item)
                             if 'picture' in item:
                                 print('url: ', item['picture'][0][0]['url'])
                     print(10*'-')
@@ -84,9 +77,7 @@ def czytaj_workout(_line):
             elif v == 'points':
                 print(i)
                 print('TU SĄ POINSY')
-                #print('v==points: ',v)
                 print(10*'v')
-                #print('dla points index = ',i)#ale tu o 1 więcej - 15,16 itp
                 location_dic_list = workout_data[i]['points']
                 print("Jeśli nie widać lokacji, to zakomentuj dyrektywę CONTINUE w linii 92\n")
                 continue
