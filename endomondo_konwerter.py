@@ -23,8 +23,9 @@ def czytaj_wiersz(plik):
             break
         yield wiersz
 # noinspection PyShadowingNames
-def czytaj_workout(_line):
+def czytaj_workout(_line, _www):
     try:
+        _www.write("<h3 align = 'center'>Trening {0}</h3><br>\n".format(_line.strip('.json')))
         print("Otwieram plik " + _line.strip())
         if _line == "output.txt":
             return 0
@@ -42,14 +43,34 @@ def czytaj_workout(_line):
         for i, v in enumerate(klucze):
             #print("i=",i, "v=",v)
             if  v != 'points':
-                print('index = ',i)
-                print('klucz = ',list(workout_data[i].keys())[0])# == v
-                print('wartość: ',workout_data[i][v])
-                print(10*'-')
+                #_www.write("<b>{0}</b> {1}<br>".format(list(workout_data[i].keys())[0], workout_data[i][v]))
+                if v == 'message': #sprawdzamy wszystkie klucze więc użyć trzeba if w każdym sprawdzeniu?
+                    _www.write("Uwagi do treningu:<br>{0}<br>".format(workout_data[i][v]))
+                    '''print('index = ',i)
+                    print('klucz = ',list(workout_data[i].keys())[0])# == v
+                    print('wartość: ',workout_data[i][v])
+                    print(10*'-')'''
+                if v == 'sport':
+                    _www.write("{0}: {1}<br>".format(v, workout_data[i][v]))
+                if v == 'source':
+                    _www.write("Dane pochodzą z {1}<br>".format(v, workout_data[i][v]))
+                if v == 'distance_km':
+                    _www.write("Pokonano dystans {1:.2f}km<br>".format(v, workout_data[i][v]))
+                if v == 'speed_avg_kmh':
+                    _www.write("Średnia prędkość to {1:.2f}km/h<br>".format(v, workout_data[i][v]))
+                if v == 'speed_max_kmh':
+                    _www.write("Prędkość maksymalna: {1:.2f}km/h<br>".format(v, workout_data[i][v]))
+                if v == 'altitude_min_m':
+                    _www.write("Najmniejsze przewyższenie: {1}m<br>".format(v, workout_data[i][v]))
+                if v == 'altitude_max_m':
+                    _www.write("Największe przewyższenie: {1}m<br>".format(v, workout_data[i][v]))
+                if v == 'duration_s':
+                    _www.write("Trening trwał {0}godz. {1}min.<br>".format(workout_data[i][v]//3600, (workout_data[i][v]%3600)//60 ))
                 if v == 'comments':
                     print("SEKCJA COMMENTS")
                     comment_dic_list= workout_data[i]
                     comment_dic = list(comment_dic_list['comments'][0])
+                    _www.write("Do treningu {0} dodał komentarz:<br><i>{1}</i><br>".format(comment_dic[0]['author'],comment_dic[2]['text'] ))
                     print('Autor: ',comment_dic[0]['author'])
                     print('text: ', comment_dic[2]['text'])
                     print(10*'-')
@@ -61,6 +82,7 @@ def czytaj_workout(_line):
                                                           # mogę użyć stałych wskaźników tabeli ([0],[1])
                     print('identifier: ', routes_dic[0]['identifier'])
                     print(10*'-')
+                    _www.write("Workout przebiegał śladem zapisanej trasy {0}<br>".format(routes_dic[1]['name']))
                 elif v == "pictures":
                     print("SEKCJA PICTURES")
                     pictures_dic_list = workout_data[i]['pictures']
@@ -68,11 +90,14 @@ def czytaj_workout(_line):
                         for item in v:
                             if 'picture' in item:
                                 print('url: ', item['picture'][0][0]['url'])
+                                _www.write("<img src=../{0} style='max-height:160px'; display='block'; padding='4px'; align='right'; alt='fotka'><br>".format(item['picture'][0][0]['url']))
                     print(10*'-')
+
                 elif v == 'tags':
                     print("SEKCJA TAGS")
                     tagi = workout_data[i][v]
                     print('tagi:', tagi[0][0]['name'])
+                    _www.write("Zapisane tagi: {0}".format(tagi[0][0]['name']))
                     print(10 * '-')
             elif v == 'points':
                 print(i)
@@ -101,6 +126,8 @@ def czytaj_workout(_line):
         print('Błąd funkcji \'czytaj_workout\'!', sys.exc_info()[0], file=sys.stderr)
         sys.exit(1)
 #vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+h = codecs.open('./out.html', 'a', 'utf-8', 'ignore')
+h.write("<!DOCTYPE html>\n<html lang='pl'>\n<head>\n<title>Przegląd treningów</title>\n<meta charset='utf-8' />\n</head>\n<body>")
 with codecs.open('./output.txt', 'r', 'utf-8', 'ignore') as f:
         print("Odczytuję dane z dostarczonych przez Endomondo plików. Cierpliwości, "
               "to może chwilę potrwać.", end='\n')
@@ -108,4 +135,6 @@ with codecs.open('./output.txt', 'r', 'utf-8', 'ignore') as f:
         print(datetime.date.today())
         print(80 * '*')
         for wiersz in czytaj_wiersz(f):
-                czytaj_workout(wiersz)
+            czytaj_workout(wiersz, h)
+h.write("</body>\n</html>\n")
+h.close()
