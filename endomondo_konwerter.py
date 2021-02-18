@@ -25,7 +25,7 @@ def czytaj_wiersz(plik):
 # noinspection PyShadowingNames
 def czytaj_workout(_line, _www):
     try:
-        _www.write("<h3 align = 'center'>Trening {0}</h3><br>\n".format(_line.strip('.json')))
+        _www.write("\n<h3 align = 'center'>Trening {0}</h3><br>\n".format(_line.strip('.json')))
         print("Otwieram plik " + _line.strip())
         if _line == "output.txt":
             return 0
@@ -39,7 +39,7 @@ def czytaj_workout(_line, _www):
             klucz = [*workout_data[i]][0]
             if klucz not in klucze:
                 klucze.append(klucz)
-
+        _www.write("<div class='container-fluid' style='background-color: #cfc'>")
         for i, v in enumerate(klucze):
             #print("i=",i, "v=",v)
             if  v != 'points':
@@ -55,22 +55,22 @@ def czytaj_workout(_line, _www):
                 if v == 'source':
                     _www.write("Dane pochodzą z {1}<br>".format(v, workout_data[i][v]))
                 if v == 'distance_km':
-                    _www.write("Pokonano dystans {1:.2f}km<br>".format(v, workout_data[i][v]))
+                    _www.write("Pokonano dystans <b>{1:.2f}km</b><br>".format(v, workout_data[i][v]))
                 if v == 'speed_avg_kmh':
-                    _www.write("Średnia prędkość to {1:.2f}km/h<br>".format(v, workout_data[i][v]))
+                    _www.write("Średnia prędkość to <b>{1:.2f}km/h</b><br>".format(v, workout_data[i][v]))
                 if v == 'speed_max_kmh':
-                    _www.write("Prędkość maksymalna: {1:.2f}km/h<br>".format(v, workout_data[i][v]))
+                    _www.write("Prędkość maksymalna: <b>{1:.2f}km/h</b><br>".format(v, workout_data[i][v]))
                 if v == 'altitude_min_m':
-                    _www.write("Najmniejsze przewyższenie: {1}m<br>".format(v, workout_data[i][v]))
+                    _www.write("Najmniejsze przewyższenie: <b>{1}m</b><br>".format(v, workout_data[i][v]))
                 if v == 'altitude_max_m':
-                    _www.write("Największe przewyższenie: {1}m<br>".format(v, workout_data[i][v]))
+                    _www.write("Największe przewyższenie: <b>{1}m</b><br>".format(v, workout_data[i][v]))
                 if v == 'duration_s':
-                    _www.write("Trening trwał {0}godz. {1}min.<br>".format(workout_data[i][v]//3600, (workout_data[i][v]%3600)//60 ))
+                    _www.write("Trening trwał <b>{0}godz. {1}min.</b><br>".format(workout_data[i][v]//3600, (workout_data[i][v]%3600)//60 ))
                 if v == 'comments':
                     print("SEKCJA COMMENTS")
                     comment_dic_list= workout_data[i]
                     comment_dic = list(comment_dic_list['comments'][0])
-                    _www.write("Do treningu {0} dodał komentarz:<br><i>{1}</i><br>".format(comment_dic[0]['author'],comment_dic[2]['text'] ))
+                    _www.write("Do treningu {0} dodał komentarz:<br>&nbsp&nbsp&nbsp<i>{1}</i><br>".format(comment_dic[0]['author'],comment_dic[2]['text'] ))
                     print('Autor: ',comment_dic[0]['author'])
                     print('text: ', comment_dic[2]['text'])
                     print(10*'-')
@@ -86,12 +86,16 @@ def czytaj_workout(_line, _www):
                 elif v == "pictures":
                     print("SEKCJA PICTURES")
                     pictures_dic_list = workout_data[i]['pictures']
+                    _www.write("<div class=box align='top' style = 'float: right;width: 40%;border: 5px solid gray;margin: 2;'>")
                     for i,v in enumerate(pictures_dic_list):
+
                         for item in v:
                             if 'picture' in item:
                                 print('url: ', item['picture'][0][0]['url'])
-                                _www.write("<img src=../{0} style='max-height:160px'; display='block'; padding='4px'; align='right'; alt='fotka'><br>".format(item['picture'][0][0]['url']))
+                                _www.write("<img src=../{0} style='float:right;width:30%;height:30%;object-fit:scale-down;box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);' alt='fotka'>".format(item['picture'][0][0]['url']))
+
                     print(10*'-')
+                    _www.write("</div>")
 
                 elif v == 'tags':
                     print("SEKCJA TAGS")
@@ -119,7 +123,9 @@ def czytaj_workout(_line, _www):
                             print(' '.join(["Prędkość na odcinku: ", str(item['speed_kmh']), 'km/h']))
                 print(10*'*')
             else:
+                _www.write("</div>")
                 continue
+        _www.write("</div>")
         return workout_data
     #--------------------------------------------------------------------------------
     except(IOError, OSError):
@@ -127,7 +133,7 @@ def czytaj_workout(_line, _www):
         sys.exit(1)
 #vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
 h = codecs.open('./out.html', 'a', 'utf-8', 'ignore')
-h.write("<!DOCTYPE html>\n<html lang='pl'>\n<head>\n<title>Przegląd treningów</title>\n<meta charset='utf-8' />\n</head>\n<body>")
+h.write("<!DOCTYPE html>\n<html lang='pl'>\n<head>\n<title>Przegląd treningów</title>\n<meta charset='utf-8' />\n<meta name='viewport' content='width=device-width, initial-scale=1.0'>\n</head>\n<body>")
 with codecs.open('./output.txt', 'r', 'utf-8', 'ignore') as f:
         print("Odczytuję dane z dostarczonych przez Endomondo plików. Cierpliwości, "
               "to może chwilę potrwać.", end='\n')
