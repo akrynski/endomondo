@@ -43,13 +43,8 @@ def czytaj_workout(_line, _www):
         for i, v in enumerate(klucze):
             #print("i=",i, "v=",v)
             if  v != 'points':
-                #_www.write("<b>{0}</b> {1}<br>".format(list(workout_data[i].keys())[0], workout_data[i][v]))
                 if v == 'message': #sprawdzamy wszystkie klucze więc użyć trzeba if w każdym sprawdzeniu?
-                    _www.write("Uwagi do treningu:<br>{0}<br>".format(workout_data[i][v]))
-                    '''print('index = ',i)
-                    print('klucz = ',list(workout_data[i].keys())[0])# == v
-                    print('wartość: ',workout_data[i][v])
-                    print(10*'-')'''
+                    _www.write("Uwagi do treningu:<br>&nbsp&nbsp&nbsp<i>{0}</i><br>".format(workout_data[i][v]))
                 if v == 'sport':
                     _www.write("{0}: {1}<br>".format(v, workout_data[i][v]))
                 if v == 'source':
@@ -86,13 +81,15 @@ def czytaj_workout(_line, _www):
                 elif v == "pictures":
                     print("SEKCJA PICTURES")
                     pictures_dic_list = workout_data[i]['pictures']
-                    _www.write("<div class=box align='top' style = 'float: right;width: 40%;border: 5px solid gray;margin: 2;'>")
+#                    _www.write("<div class=box align='top' style = 'float: right;width: 40%;border: 0px solid gray;margin: 2;'>")
+                    _www.write("<div style='display:grid; grid-gap:.5rem;grid-template-columns:repeat(auto-fit,minmax(10px, 1fr))'>")
+
                     for i,v in enumerate(pictures_dic_list):
 
                         for item in v:
                             if 'picture' in item:
                                 print('url: ', item['picture'][0][0]['url'])
-                                _www.write("<img src=../{0} style='float:right;width:30%;height:30%;object-fit:scale-down;box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);' alt='fotka'>".format(item['picture'][0][0]['url']))
+                                _www.write("<img src=../{0} style='float:right;width:65%;height:50%;object-fit:scale-down;box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);' alt='fotka'>".format(item['picture'][0][0]['url']))
 
                     print(10*'-')
                     _www.write("</div>")
