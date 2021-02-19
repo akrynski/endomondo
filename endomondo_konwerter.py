@@ -41,7 +41,6 @@ def czytaj_workout(_line, _www):
                 klucze.append(klucz)
         _www.write("<div class='container-fluid' style='background-color: #cfc'>")
         for i, v in enumerate(klucze):
-            #print("i=",i, "v=",v)
             if  v != 'points':
                 if v == 'message': #sprawdzamy wszystkie klucze więc użyć trzeba if w każdym sprawdzeniu?
                     _www.write("Uwagi do treningu:<br>&nbsp&nbsp&nbsp<i>{0}</i><br>".format(workout_data[i][v]))
@@ -62,44 +61,24 @@ def czytaj_workout(_line, _www):
                 if v == 'duration_s':
                     _www.write("Trening trwał <b>{0}godz. {1}min.</b><br>".format(workout_data[i][v]//3600, (workout_data[i][v]%3600)//60 ))
                 if v == 'comments':
-                    print("SEKCJA COMMENTS")
                     comment_dic_list= workout_data[i]
                     comment_dic = list(comment_dic_list['comments'][0])
                     _www.write("Do treningu {0} dodał komentarz:<br>&nbsp&nbsp&nbsp<i>{1}</i><br>".format(comment_dic[0]['author'],comment_dic[2]['text'] ))
-                    print('Autor: ',comment_dic[0]['author'])
-                    print('text: ', comment_dic[2]['text'])
-                    print(10*'-')
                 elif v == 'routes':
-                    print('SEKCJA ROUTES')
                     routes_dic_list = workout_data[i]
                     routes_dic = list(routes_dic_list['routes'][0])
-                    print('name: ',routes_dic[1]['name']) # jeśli struktura tabeli wartości routes jest niezmienna
-                                                          # mogę użyć stałych wskaźników tabeli ([0],[1])
-                    print('identifier: ', routes_dic[0]['identifier'])
-                    print(10*'-')
-                    _www.write("Workout przebiegał śladem zapisanej trasy {0}<br>".format(routes_dic[1]['name']))
+                    _www.write("Workout przebiegał śladem zapisanej trasy <i>{0}</i><br>".format(routes_dic[1]['name']))
                 elif v == "pictures":
-                    print("SEKCJA PICTURES")
                     pictures_dic_list = workout_data[i]['pictures']
-#                    _www.write("<div class=box align='top' style = 'float: right;width: 40%;border: 0px solid gray;margin: 2;'>")
                     _www.write("<div style='display:grid; grid-gap:.5rem;grid-template-columns:repeat(auto-fit,minmax(10px, 1fr))'>")
-
                     for i,v in enumerate(pictures_dic_list):
-
                         for item in v:
                             if 'picture' in item:
-                                print('url: ', item['picture'][0][0]['url'])
                                 _www.write("<img src=../{0} style='float:right;width:65%;height:50%;object-fit:scale-down;box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);' alt='fotka'>".format(item['picture'][0][0]['url']))
-
-                    print(10*'-')
                     _www.write("</div>")
-
                 elif v == 'tags':
-                    print("SEKCJA TAGS")
                     tagi = workout_data[i][v]
-                    print('tagi:', tagi[0][0]['name'])
                     _www.write("Zapisane tagi: {0}".format(tagi[0][0]['name']))
-                    print(10 * '-')
             elif v == 'points':
                 print(i)
                 print('TU SĄ POINSY')
