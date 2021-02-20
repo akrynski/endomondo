@@ -80,23 +80,22 @@ def czytaj_workout(_line, _www):
                     tagi = workout_data[i][v]
                     _www.write("Zapisane tagi: {0}".format(tagi[0][0]['name']))
             elif v == 'points':
-                print(i)
-                print('TU SĄ POINSY')
-                print(10*'v')
+                odcinki = []
+                czasy = []
                 location_dic_list = workout_data[i]['points']
-                print("Jeśli nie widać lokacji, to zakomentuj dyrektywę CONTINUE w linii 92\n")
-                continue
                 for i,v in enumerate(location_dic_list):
-                    print(i,'||||||||||||||||||||||||||||||\n')
                     for item in v:
                         if 'location' in item:
                             print('latitude', item['location'][0][0]['latitude'])
                             print('longitude', item['location'][0][1]['longitude'])
                         if 'distance_km' in item:
-                            print('przebyty dystans: ', item['distance_km'], 'km')
+                            odcinki.append(item['distance_km'])
                         if 'speed_kmh' in item:
                             #print('Prędkość na odcinku: ', item['speed_kmh'],'km/h')
-                            print(' '.join(["Prędkość na odcinku: ", str(item['speed_kmh']), 'km/h']))
+                            #print(' '.join(["Prędkość na odcinku: ", str(item['speed_kmh']), 'km/h']))
+                            czasy.append(item['speed_kmh'])
+                            a = list(zip(odcinki, czasy))
+                    print("{0} ".format(a[:]))
                 print(10*'*')
             else:
                 _www.write("</div>")
