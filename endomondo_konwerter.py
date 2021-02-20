@@ -6,6 +6,7 @@
 #github access key: 044cb299a8c2d590a7d100d092b469ef0e2f0d3b
 #delete it if u makes repo public !!!!!!!!!!!!!
 import codecs, os, sys, datetime, json
+import matplotlib.pyplot as plt
 
 klucze = []
 
@@ -83,6 +84,8 @@ def czytaj_workout(_line, _www):
                 odcinki = []
                 czasy = []
                 location_dic_list = workout_data[i]['points']
+                a=[]
+                fig, ax = plt.subplots()
                 for i,v in enumerate(location_dic_list):
                     for item in v:
                         if 'location' in item:
@@ -90,12 +93,19 @@ def czytaj_workout(_line, _www):
                             print('longitude', item['location'][0][1]['longitude'])
                         if 'distance_km' in item:
                             odcinki.append(item['distance_km'])
+                        else: odcinki.append(0)
                         if 'speed_kmh' in item:
                             #print('Prędkość na odcinku: ', item['speed_kmh'],'km/h')
                             #print(' '.join(["Prędkość na odcinku: ", str(item['speed_kmh']), 'km/h']))
                             czasy.append(item['speed_kmh'])
-                            a = list(zip(odcinki, czasy))
-                    print("{0} ".format(a[:]))
+                        else: czasy.append(0)
+                #a = list(zip(odcinki, czasy))
+                #print(a[:])
+                ax.bar(odcinki, czasy)
+                #print(len(odcinki))
+                #print(len(czasy))
+                plt.savefig("../resources/pic"+str(_line)+".png")
+                #plt.show()
                 print(10*'*')
             else:
                 _www.write("</div>")
