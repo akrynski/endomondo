@@ -86,6 +86,7 @@ def czytaj_workout(_line, _www):
                 location_dic_list = workout_data[i]['points']
                 a=[]
                 fig, ax = plt.subplots()
+                plt.rcParams.update({'figure.autolayout': True})
                 for i,v in enumerate(location_dic_list):
                     for item in v:
                         if 'location' in item:
@@ -93,19 +94,14 @@ def czytaj_workout(_line, _www):
                             print('longitude', item['location'][0][1]['longitude'])
                         if 'distance_km' in item:
                             odcinki.append(item['distance_km'])
-                        else: odcinki.append(0)
+                        else: odcinki.append(0)# uzupełnienie, bo len(odcinki) musi == z len(czasy)
                         if 'speed_kmh' in item:
-                            #print('Prędkość na odcinku: ', item['speed_kmh'],'km/h')
-                            #print(' '.join(["Prędkość na odcinku: ", str(item['speed_kmh']), 'km/h']))
                             czasy.append(item['speed_kmh'])
-                        else: czasy.append(0)
-                #a = list(zip(odcinki, czasy))
-                #print(a[:])
-                ax.bar(odcinki, czasy)
-                #print(len(odcinki))
-                #print(len(czasy))
-                plt.savefig("../resources/pic"+str(_line)+".png")
-                #plt.show()
+                        else: czasy.append(0) #j.w. odcinki
+                #print(odcinki)
+                #print(czasy)
+                #ax.bar(czasy, odcinki)
+                plt.savefig(''.join(["../resources/pic", str(_line), ".png"]))
                 print(10*'*')
             else:
                 _www.write("</div>")
