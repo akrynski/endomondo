@@ -7,6 +7,8 @@
 #delete it if u makes repo public !!!!!!!!!!!!!
 import codecs, os, sys, datetime, json
 import matplotlib.pyplot as plt
+import re
+import numpy as np
 
 klucze = []
 
@@ -83,24 +85,34 @@ def czytaj_workout(_line, _www):
             elif v == 'points':
                 odcinki = []
                 czasy = []
+                czas = []
                 location_dic_list = workout_data[i]['points']
-                a=[]
-                fig, ax = plt.subplots()
+
+                fig, ax = plt.subplots(ncols=1, nrows=1)
                 plt.rcParams.update({'figure.autolayout': True})
                 for i,v in enumerate(location_dic_list):
                     for item in v:
                         if 'location' in item:
                             print('latitude', item['location'][0][0]['latitude'])
                             print('longitude', item['location'][0][1]['longitude'])
+                        if 'timestamp' in item:
+                            czas.append(re.findall(r'\d{1,2}:\d{1,2}:\d{1,2}', item['timestamp'])[0])
                         if 'distance_km' in item:
                             odcinki.append(item['distance_km'])
-                        else: odcinki.append(0)# uzupełnienie, bo len(odcinki) musi == z len(czasy)
+                        #else: odcinki.append(0)# uzupełnienie, bo len(odcinki) musi == z len(czasy)
                         if 'speed_kmh' in item:
                             czasy.append(item['speed_kmh'])
-                        else: czasy.append(0) #j.w. odcinki
+                        #else: czasy.append(0) #j.w. odcinki
                 #print(odcinki)
-                #print(czasy)
-                #ax.bar(czasy, odcinki)
+                plt.title(_line)
+                plt.xlabel('Czas')
+                plt.ylabel('Kilometry')
+                x=len(czas)
+                width = 0.20
+                ax.bar(x, odcinki, width=-1.*width, align='edge', label="odcinki")
+                ax.bar(x, czasy, width=width, align='edge', color=list(plt.rcParams['axes.prop_cycle'])[2]['color'],label="czasy")
+                #ax.set_xticks(x)
+                plt.legend()
                 plt.savefig(''.join(["../resources/pic", str(_line), ".png"]))
                 print(10*'*')
             else:
