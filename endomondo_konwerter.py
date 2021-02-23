@@ -104,16 +104,23 @@ def czytaj_workout(_line, _www):
                             czasy.append(item['speed_kmh'])
                         #else: czasy.append(0) #j.w. odcinki
                 #print(odcinki)
-                plt.title(_line)
+                plt.title(_line.strip('.json'))
                 plt.xlabel('Czas')
                 plt.ylabel('Kilometry')
-                x=len(czas)
+                x=len(odcinki)
                 width = 0.20
-                ax.bar(x, odcinki, width=-1.*width, align='edge', label="odcinki")
+                #print(odcinki)
+                ax.bar(x, odcinki, width=-1. * width, align='edge', label="odcinki")
+                #ax.bar(x, czas, width=-1. * width, align='edge', label="czas")
                 ax.bar(x, czasy, width=width, align='edge', color=list(plt.rcParams['axes.prop_cycle'])[2]['color'],label="czasy")
-                #ax.set_xticks(x)
+                #ax.set_xticks([0,3600,0,60])
+                #ax.set_xticks([x,60])
                 plt.legend()
-                plt.savefig(''.join(["../resources/pic", str(_line), ".png"]))
+                pic = ''.join(["../resources/pic", str(_line.strip('.json')), ".png"])
+                plt.savefig(pic)
+                _www.write(
+                    "<img src=../{0} style='float:right;width:65%;height:50%;object-fit:scale-down;box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);' alt='fotka'>".format(pic))
+
                 print(10*'*')
             else:
                 _www.write("</div>")
