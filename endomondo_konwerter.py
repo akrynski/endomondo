@@ -87,9 +87,6 @@ def czytaj_workout(_line, _www):
                 czasy = []
                 czas = []
                 location_dic_list = workout_data[i]['points']
-
-                fig, ax = plt.subplots(ncols=1, nrows=1)
-                plt.rcParams.update({'figure.autolayout': True})
                 for i,v in enumerate(location_dic_list):
                     for item in v:
                         if 'location' in item:
@@ -102,8 +99,8 @@ def czytaj_workout(_line, _www):
                         #else: odcinki.append(0)# uzupełnienie, bo len(odcinki) musi == z len(czasy)
                         if 'speed_kmh' in item:
                             czasy.append(item['speed_kmh'])
-                        #else: czasy.append(0) #j.w. odcinki
-                #print(odcinki)
+                fig, ax = plt.subplots(ncols=1, nrows=1)
+                plt.rcParams.update({'figure.autolayout': True})
                 plt.title(_line.strip('.json'))
                 plt.xlabel('Czas')
                 plt.ylabel('Kilometry')
@@ -119,7 +116,7 @@ def czytaj_workout(_line, _www):
                 pic = ''.join(["../resources/pic", str(_line.strip('.json')), ".png"])
                 plt.savefig(pic)
                 _www.write(
-                    "<img src=../{0} style='float:right;width:65%;height:50%;object-fit:scale-down;box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);' alt='fotka'>".format(pic))
+                    "<img src='{0}' style='float:center;width:200px;height:150px;object-fit:scale-down;box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);' alt='fotka'>".format(str(pic)))
 
                 print(10*'*')
             else:
