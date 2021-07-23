@@ -4,6 +4,7 @@
 # licence: MIT
 # date: 05-02-2021
 #github access key: 044cb299a8c2d590a7d100d092b469ef0e2f0d3b
+# new regenerated:  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
 #delete it if u makes repo public !!!!!!!!!!!!!
 import codecs, os, sys, datetime, json
 import matplotlib.pyplot as plt
@@ -107,10 +108,10 @@ def czytaj_workout(_line, _www):
                 x=len(odcinki)
                 x1=len(czasy)
                 #x2=len(czas)
-                width = 0.20
-                ax.bar(x, odcinki, width=-1. * width, align='edge', label="odcinki")
+                width = 0.01
+                ax.bar(x, odcinki, label="odcinki")
                 #ax.bar(x, czas, width=-1. * width, align='edge', label="czas")
-                ax.bar(x1, czasy, width=width, align='edge', color=list(plt.rcParams['axes.prop_cycle'])[2]['color'],label="czasy")
+                ax.bar(x1, czasy, color=list(plt.rcParams['axes.prop_cycle'])[2]['color'],label="czasy")
                 #ax.set_xticks([0,3600,0,60])
                 #ax.set_xticks([x,60])
                 plt.legend()
@@ -118,7 +119,9 @@ def czytaj_workout(_line, _www):
                 plt.savefig(pic)
                 _www.write(
                     "<img src='{0}' style='float:center;width:200px;height:150px;object-fit:scale-down;box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);' alt='fotka'>".format(str(pic)))
-
+                #print(czasy)
+                #print(czas)
+                #print(odcinki)
                 print(10*'*')
             else:
                 _www.write("</div>")
