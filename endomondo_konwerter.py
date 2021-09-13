@@ -8,7 +8,6 @@
 #delete it if u makes repo public !!!!!!!!!!!!!
 
 #TODO:
-
 #Poprawić oś odciętych by pokazywała rzeczywisty czas trwania workoutu.
 
 import codecs, os, sys, datetime, json
@@ -116,7 +115,7 @@ def czytaj_workout(_line, _www):
                 width = 0.01
                 ax.bar(x, odcinki, label="Dystans")
                 #ax.bar(x, czas, width=-1. * width, align='edge', label="czas")
-                ax.bar(x1, czasy, color=list(plt.rcParams['axes.prop_cycle'])[2]['color'],label="Tempo")
+                ax.bar(x1, czasy, color=list(plt.rcParams['axes.prop_cycle'])[2]['color'],label="Tempo", alpha=.6)
                 #ax.set_xticks([0,3600,0,60])
                 #ax.set_xticks([x,60])
                 plt.legend()
