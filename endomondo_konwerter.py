@@ -8,6 +8,7 @@
 #delete it if u makes repo public !!!!!!!!!!!!!
 
 #TODO:
+
 #Poprawić oś odciętych by pokazywała rzeczywisty czas trwania workoutu.
 
 import codecs, os, sys, datetime, json
