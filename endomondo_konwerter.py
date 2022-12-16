@@ -3,9 +3,8 @@
 # author: Andrzej Kryński
 # licence: MIT
 # date: 05-02-2021
-# github access key: 044cb299a8c2d590a7d100d092b469ef0e2f0d3b
-# new regenerated:  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
-# delete it if u makes repo public !!!!!!!!!!!!!
+
+
 
 # TODO:
 # Poprawić oś odciętych by pokazywała rzeczywisty czas trwania workoutu.
